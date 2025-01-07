@@ -1,16 +1,37 @@
 import Link from "next/link";
 import { VscListSelection } from "react-icons/vsc";
-import {BiMessageSquareAdd} from "react-icons/bi"
-import {RxDashboard} from "react-icons/rx"
+import { BiMessageSquareAdd } from "react-icons/bi";
+import { RxDashboard } from "react-icons/rx";
+import { FiLogOut } from "react-icons/fi";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 function Layout({ children }) {
+  const { status } = useSession();
+  const router = useRouter();
+
+  // handlers
+  const logoutHandler = async () => {
+    signOut();
+  };
+
+  useEffect(() => {
+    if (status === "unauthenticated") router.replace("/login");
+  }, [status]);
   return (
-    <div >
+    <div>
       <header>
         <p>
           TaskTonic |
           <span className="text-lg font-medium"> your daily todo handler</span>
         </p>
+        {status === "authenticated" && (
+          <button onClick={logoutHandler}>
+            Logout
+            <FiLogOut />
+          </button>
+        )}
       </header>
       <div className="container--main">
         <aside>

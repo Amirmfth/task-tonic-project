@@ -5,10 +5,9 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
 import Tasks from "../modules/Tasks";
+import HomePageSkeleton from "../modules/HomePageSkeleton";
 
 function HomePage() {
-  const router = useRouter();
-  const { status } = useSession();
 
   const {
     data,
@@ -20,43 +19,46 @@ function HomePage() {
     queryFn: async () => {
       return await axios.get("/api/todos").then((res) => res.data);
     },
-    enabled: status === "authenticated",
   });
   const todos = data?.data?.todos;
-  console.log(todos);
 
-  //   effects
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.replace("/login");
-    }
-  }, [status]);
 
-  useEffect(() => {}, []);
 
   if (isPending)
     return (
-      <div className="flex items-center justify-center">
-        <ClipLoader size={180} />
-      </div>
+      <HomePageSkeleton/>
     );
   return (
     <div className="home-page">
       <div className="home-page--todo">
         <p>Todo</p>
-        <Tasks data={todos["todo"]} />
+        <Tasks
+          data={todos["todo"]}
+          refetch={refetchGetTodos}
+          next="inProgress"
+        />
       </div>
       <div className="home-page--inProgress">
         <p>In Progress</p>
-        <Tasks data={todos["inProgress"]} />
+        <Tasks
+          data={todos["inProgress"]}
+          refetch={refetchGetTodos}
+          next="review"
+          back="todo"
+        />
       </div>
       <div className="home-page--review">
         <p>Review</p>
-        <Tasks data={todos["review"]} />
+        <Tasks
+          data={todos["review"]}
+          refetch={refetchGetTodos}
+          next="done"
+          back="inProgress"
+        />
       </div>
       <div className="home-page--done">
         <p>Done</p>
-        <Tasks data={todos["done"]} />
+        <Tasks data={todos["done"]} refetch={refetchGetTodos} back="review" />
       </div>
     </div>
   );

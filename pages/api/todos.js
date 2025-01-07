@@ -16,9 +16,7 @@ export default async function handler(req, res) {
   const session = await getServerSession(req, res, authOptions);
 
   if (!session)
-    return res
-      .status(401)
-      .json({ status: "failed", message: "not authorized" });
+    return res.status(401).json({ status: "failed", message: "not logged in" });
 
   const user = await User.findOne({ email: session.user.email });
 
@@ -52,5 +50,30 @@ export default async function handler(req, res) {
     return res
       .status(200)
       .json({ status: "success", data: { todos: sortedTodos } });
+  }
+
+  // PATCH REQUESTS
+  if (req.method === "PATCH") {
+    const { id, status } = req.body;
+    if (!id || !status)
+      return res
+        .status(400)
+        .json({ status: "failed", message: "id and status is required" });
+
+    if (typeof id !== "string" || id.trim().length === 0)
+      return res
+        .status(400)
+        .json({ status: "failed", message: "id should be a valid string" });
+
+    if (typeof status !== "string" || status.trim().length === 0)
+      return res
+        .status(400)
+        .json({ status: "failed", message: "status should be a valid string" });
+
+    const result = await User.updateOne(
+      { "todos._id": id },
+      { $set: { "todos.$.status": status } }
+    );
+    return res.status(200).json({ status: "success", message: "Todo updated" });
   }
 }

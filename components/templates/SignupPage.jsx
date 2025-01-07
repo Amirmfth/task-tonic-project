@@ -14,13 +14,7 @@ function SignupPage() {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  const { status } = useSession();
-
-  useEffect(() => {
-    if (status === "authenticated") {
-      router.replace("/");
-    }
-  }, [status]);
+  
 
   const signupMutation = useMutation({
     mutationFn: async () => {

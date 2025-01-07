@@ -12,13 +12,6 @@ function LoginPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const {status} = useSession()
-
-  useEffect(() => {
-    if(status === "authenticated") {
-      router.replace("/")
-    }
-  } , [status])
 
   //handlers
   const loginHandler = async () => {
