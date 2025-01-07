@@ -5,7 +5,7 @@ import {RxDashboard} from "react-icons/rx"
 
 function Layout({ children }) {
   return (
-    <div className="container">
+    <div >
       <header>
         <p>
           TaskTonic |
