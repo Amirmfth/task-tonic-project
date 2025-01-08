@@ -12,7 +12,7 @@ export default function App({ Component, pageProps }) {
       <QueryClientProvider client={client}>
         <Layout>
           <Component {...pageProps} />
-          <ToastContainer />
+          <ToastContainer autoClose={2000} hideProgressBar position="top-center" />
         </Layout>
       </QueryClientProvider>
     </SessionProvider>

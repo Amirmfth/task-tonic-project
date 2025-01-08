@@ -41,4 +41,30 @@ export default async function handler(req, res) {
       },
     });
   }
+
+  //   PATCH REQUESTS
+  if (req.method === "PATCH") {
+    const { name, lastName, email } = req.body;
+    if (!name || !lastName || !email) {
+      return res
+        .status(400)
+        .json({ status: "failed", message: "name, lastName and email are required" });
+    }
+    if (!/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(email)) {
+      return res
+        .status(400)
+        .json({ status: "failed", message: "invalid email" });
+    }
+    user.name = name;
+    user.lastName = lastName;
+    user.email = email;
+    try {
+      await user.save();
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ status: "failed", message: "failed to update profile" });
+    }
+    return res.status(200).json({ status: "success", message: "Profile updated successfully" });
+  }
 }

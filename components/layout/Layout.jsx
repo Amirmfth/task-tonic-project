@@ -11,27 +11,18 @@ function Layout({ children }) {
   const { status } = useSession();
   const router = useRouter();
 
-  // handlers
-  const logoutHandler = async () => {
-    signOut();
-  };
+  ;
 
   useEffect(() => {
     if (status === "unauthenticated") router.replace("/login");
   }, [status]);
   return (
     <div>
-      <header>
-        <p>
+      <header style={{backgroundImage: "url('/assets/images/header-bg.svg')"}}>
+        <p className="text-blue-700 bg-blue-100 h-fit p-2 rounded-xl text-4xl ">
           TaskTonic |
-          <span className="text-lg font-medium"> your daily todo handler</span>
+          <span className="text-2xl font-medium "> your daily todo handler</span>
         </p>
-        {status === "authenticated" && (
-          <button onClick={logoutHandler}>
-            Logout
-            <FiLogOut />
-          </button>
-        )}
       </header>
       <div className="container--main">
         <aside>
