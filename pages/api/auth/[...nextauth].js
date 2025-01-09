@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvide from "next-auth/providers/google";
 import connectDB from "../../../utils/connectDB";
 import User from "../../../models/User";
 import { verifyPassword } from "../../../utils/auth";
@@ -25,6 +26,10 @@ export const authOptions = {
         }
         return user;
       },
+    }),
+    GoogleProvide({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
 };

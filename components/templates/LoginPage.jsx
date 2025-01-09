@@ -5,13 +5,13 @@ import { useEffect, useState } from "react";
 import { signIn, useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
+import { BsGoogle } from "react-icons/bs";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-
 
   //handlers
   const loginHandler = async () => {
@@ -52,6 +52,10 @@ function LoginPage() {
       >
         {loading && <ClipLoader size={20} />}
         <span className="ml-2">Login</span>
+      </button>
+      <button onClick={() => signIn("google")} className="mt-4 bg-blue-500 text-white text-lg hover:-translate-y-1  hover:shadow-md duration-200">
+        <BsGoogle className="mr-2"/>
+        Google
       </button>
       <div>
         <p className="mr-2">Create an account?</p>

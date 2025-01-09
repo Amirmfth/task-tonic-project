@@ -1,4 +1,5 @@
 import moment from "moment/moment";
+import { signOut } from "next-auth/react";
 import { FiLogOut } from "react-icons/fi";
 
 function ProfileData({ user, setEdit }) {
