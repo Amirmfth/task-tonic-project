@@ -19,7 +19,7 @@ function AddTodoPage() {
   const addTodoMutation = useMutation({
     mutationFn: async () => {
       return await axios
-        .post("/api/todos", { title, status }, { withCredentials: true })
+        .post("/api/todos", { title, status , description }, { withCredentials: true })
         .then((res) => res.data);
     },
     onSuccess: (res) => {
@@ -40,8 +40,8 @@ function AddTodoPage() {
   };
 
   return (
-    <div className="flex w-full justify-between">
-      <div className="add-form">
+    <div className="flex justify-between">
+      <div className="add-form flex-1">
         <h2 className="text-2xl font-bold">
           <GrAddCircle />
           Add New Todo
@@ -63,7 +63,7 @@ function AddTodoPage() {
               <textarea
                 name="description"
                 id="description"
-                className=" rounded-xl shadow-md -mb-12"
+                className="p-2 rounded-xl shadow-md -mb-12"
                 rows={"7"}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -113,8 +113,8 @@ function AddTodoPage() {
       </div>
       <Image
         src="/assets/images/checklist-todo.webp"
-        width={1000}
-        height={400}
+        width={900}
+        height={700}
         alt="todo"
         priority
       />

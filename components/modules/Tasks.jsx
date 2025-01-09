@@ -4,8 +4,12 @@ import { BiRightArrow, BiLeftArrow } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 import axios from "axios";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 function Tasks({ data, refetch, next, back }) {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   // handlers
   const changeStatus = async (id, status) => {
@@ -17,13 +21,29 @@ function Tasks({ data, refetch, next, back }) {
     if (res.status === "success") refetch();
     setLoading(false);
   };
+
+  const deleteTodoHandler = async (id) => {
+    const res = await axios
+      .delete(`/api/todos`, {data:{id}, withCredentials: true })
+      .then((res) => res.data)
+      .catch((err) => toast.error(err));
+    if (res.status === "success") {
+      toast.success("Todo deleted successfully");
+      refetch();
+    }
+  };
+  const editTodoHandler = (id) => {
+    router.push(`/todo/${id}?edit=true`);
+  };
   return (
     <div className="tasks">
       {data?.map((i) => (
         <div key={i._id} className="relative tasks__card">
           <span className={i.status}></span>
-          <RiMastodonLine />
-          <h4 className="text-2xl font-bold text-gray-800">{i.title}</h4>
+          <RiMastodonLine className="text-xl" />
+          <h4 className="w-fit text-2xl font-bold text-gray-800 hover:text-blue-600 hover:scale-105 duration-150">
+            <Link href={`/todo/${i._id}`}>{i.title}</Link>
+          </h4>
           <div>
             {!!back && (
               <button
@@ -47,10 +67,16 @@ function Tasks({ data, refetch, next, back }) {
             )}
           </div>
           <div className="absolute top-2 right-4 flex flex-col space-y-1 text-2xl">
-            <i className="bg-gray-100 text-blue-400 cursor-pointer rounded-lg p-1">
+            <i
+              onClick={() => editTodoHandler(i._id)}
+              className="bg-gray-100 text-blue-400 cursor-pointer rounded-lg p-1 hover:-translate-y-1 hover:translate-x-1 hover:shadow-md duration-200"
+            >
               <MdEdit />
             </i>
-            <i className="bg-gray-100 text-red-400 cursor-pointer rounded-lg p-1">
+            <i
+              onClick={() => deleteTodoHandler(i._id)}
+              className="bg-gray-100 text-red-400 cursor-pointer rounded-lg p-1  hover:-translate-y-1 hover:translate-x-1 hover:shadow-md duration-200"
+            >
               <MdDelete />
             </i>
           </div>

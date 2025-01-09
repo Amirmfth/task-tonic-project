@@ -22,6 +22,7 @@ const userSchema = new Schema(
     todos: [
       {
         title: { type: String, required: true },
+        description: { type: String},
         status: { type: String, required: true },
       },
     ],

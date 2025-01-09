@@ -16,7 +16,8 @@ function ProfileDataEdit({ user, setEdit, refetch }) {
         lastName: editLastName,
         email: editEmail,
       })
-      .then((res) => res.data);
+      .then((res) => res.data)
+      .catch((err) => toast.error(err));
     if (res.status === "success") {
       toast.success("Profile updated successfully");
       refetch();

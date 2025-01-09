@@ -27,7 +27,7 @@ export default async function handler(req, res) {
 
   // POST REQUESTS
   if (req.method === "POST") {
-    const { title, status } = req.body;
+    const { title, status , description } = req.body;
 
     if (!title || !status)
       return res
@@ -39,8 +39,9 @@ export default async function handler(req, res) {
         .status(400)
         .json({ status: "failed", message: "title should be a valid string" });
 
-    user.todos.push({ title, status });
+    user.todos.push({ title, status , description });
     await user.save();
+    console.log(user.todos);
     return res.status(201).json({ status: "success", message: "Todo created" });
   }
 
@@ -75,5 +76,31 @@ export default async function handler(req, res) {
       { $set: { "todos.$.status": status } }
     );
     return res.status(200).json({ status: "success", message: "Todo updated" });
+  }
+
+  // DELETE REQUESTS
+  if (req.method === "DELETE") {
+    const { id } = req.body;
+    if (!id)
+      return res
+        .status(400)
+        .json({ status: "failed", message: "id is required" });
+
+    if (typeof id !== "string" || id.trim().length === 0)
+      return res
+        .status(400)
+        .json({ status: "failed", message: "id should be a valid string" });
+
+    try {
+      await User.updateOne(
+        { "todos._id": id },
+        { $pull: { todos: { _id: id } } }
+      );
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ status: "failed", message: "failed to delete todo" });
+    }
+    return res.status(200).json({ status: "success", message: "Todo deleted" });
   }
 }

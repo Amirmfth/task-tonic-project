@@ -30,7 +30,7 @@ function HomePage() {
     );
   return (
     <div className="home-page">
-      <div className="home-page--todo">
+      <div className="home-page--todo w-1/4">
         <p>Todo</p>
         <Tasks
           data={todos["todo"]}
@@ -38,7 +38,7 @@ function HomePage() {
           next="inProgress"
         />
       </div>
-      <div className="home-page--inProgress">
+      <div className="home-page--inProgress w-1/4">
         <p>In Progress</p>
         <Tasks
           data={todos["inProgress"]}
@@ -47,7 +47,7 @@ function HomePage() {
           back="todo"
         />
       </div>
-      <div className="home-page--review">
+      <div className="home-page--review w-1/4">
         <p>Review</p>
         <Tasks
           data={todos["review"]}
@@ -56,7 +56,7 @@ function HomePage() {
           back="inProgress"
         />
       </div>
-      <div className="home-page--done">
+      <div className="home-page--done w-1/4">
         <p>Done</p>
         <Tasks data={todos["done"]} refetch={refetchGetTodos} back="review" />
       </div>
