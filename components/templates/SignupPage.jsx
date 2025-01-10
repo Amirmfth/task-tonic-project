@@ -38,7 +38,7 @@ function SignupPage() {
       <h3>Registration Form</h3>
       <input
         type="text"
-        placeholder="First Name"
+        placeholder="Username"
         onChange={(e) => setName(e.target.value)}
         value={name}
       />

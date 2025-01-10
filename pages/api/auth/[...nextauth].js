@@ -34,22 +34,38 @@ export const authOptions = {
   ],
   callbacks: {
     async signIn({ account, user }) {
+      try {
+        await connectDB();
+      } catch (error) {
+        throw new Error("Failed to connect to DB");
+      }
       if (account.provider === "google") {
-        await connectDB(); // Ensure database is connected
-
         const existingUser = await User.findOne({ email: user.email });
 
-        if (existingUser) {
-          throw new Error("User already exists");
+        if (!existingUser) {
+          // Create a new user if not found
+          await User.create({
+            name: user.name,
+            email: user.email,
+          });
         }
-        // Create a new user if not found
-        await User.create({
-          name: user.name,
-          email: user.email,
-        });
-
-        return true; // Allow the sign-in to proceed
       }
+      if (account.provider === "credentials") {
+        return true;
+      }
+      return true; // Allow the sign-in to proceed
+    },
+    async jwt({ token, account }) {
+      if (account) {
+        token.provider = account.provider;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token.provider) {
+        session.provider = token.provider; 
+      }
+      return session;
     },
   },
 };

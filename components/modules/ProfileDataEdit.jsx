@@ -1,5 +1,6 @@
 import axios from "axios";
 import moment from "moment/moment";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -7,6 +8,8 @@ function ProfileDataEdit({ user, setEdit, refetch }) {
   const { name, lastName, email, createdAt } = user;
   const [editName, setEditName] = useState(name);
   const [editEmail, setEditEmail] = useState(email);
+  const { data: session } = useSession();
+  console.log(session);
 
   const saveEditHandler = async () => {
     const res = await axios
@@ -36,12 +39,16 @@ function ProfileDataEdit({ user, setEdit, refetch }) {
       </div>
       <div>
         <span>Email: </span>
-        <input
-          className="text-xl text-black"
-          type="text"
-          value={editEmail}
-          onChange={(e) => setEditEmail(e.target.value)}
-        />
+        {session.provider === "google" ? (
+          <p>{session.user.email}</p>
+        ) : (
+          <input
+            className="text-xl text-black"
+            type="text"
+            value={editEmail}
+            onChange={(e) => setEditEmail(e.target.value)}
+          />
+        )}
       </div>
       <div>
         <span>Member Since: </span>

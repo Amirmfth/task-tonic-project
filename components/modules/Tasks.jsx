@@ -41,7 +41,7 @@ function Tasks({ data, refetch, next, back }) {
         <div key={i._id} className="relative tasks__card">
           <span className={i.status}></span>
           <RiMastodonLine className="text-xl" />
-          <h4 className="w-fit text-2xl font-bold text-gray-800 hover:text-blue-600 hover:scale-105 duration-150">
+          <h4 className="w-9/12 text-xl font-semibold text-gray-800 hover:text-blue-600 hover:scale-105 duration-150">
             <Link href={`/todo/${i._id}`}>{i.title}</Link>
           </h4>
           <div>
