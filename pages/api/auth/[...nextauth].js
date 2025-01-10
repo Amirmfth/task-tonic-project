@@ -32,6 +32,26 @@ export const authOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
+  callbacks: {
+    async signIn({ account, user }) {
+      if (account.provider === "google") {
+        await connectDB(); // Ensure database is connected
+
+        const existingUser = await User.findOne({ email: user.email });
+
+        if (existingUser) {
+          throw new Error("User already exists");
+        }
+        // Create a new user if not found
+        await User.create({
+          name: user.name,
+          email: user.email,
+        });
+
+        return true; // Allow the sign-in to proceed
+      }
+    },
+  },
 };
 
 export default NextAuth(authOptions);

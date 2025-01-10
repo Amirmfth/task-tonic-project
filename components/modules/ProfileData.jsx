@@ -3,7 +3,7 @@ import { signOut } from "next-auth/react";
 import { FiLogOut } from "react-icons/fi";
 
 function ProfileData({ user, setEdit }) {
-  const { name, lastName, email, createdAt } = user;
+  const { name, email, createdAt } = user;
 
   // handlers
   const logoutHandler = async () => {
@@ -15,10 +15,6 @@ function ProfileData({ user, setEdit }) {
       <div>
         <span>Name: </span>
         <p>{name}</p>
-      </div>
-      <div>
-        <span>Last Name: </span>
-        <p>{lastName}</p>
       </div>
       <div>
         <span>Email: </span>

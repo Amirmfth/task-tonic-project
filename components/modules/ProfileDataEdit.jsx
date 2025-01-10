@@ -6,14 +6,12 @@ import { toast } from "react-toastify";
 function ProfileDataEdit({ user, setEdit, refetch }) {
   const { name, lastName, email, createdAt } = user;
   const [editName, setEditName] = useState(name);
-  const [editLastName, setEditLastName] = useState(lastName);
   const [editEmail, setEditEmail] = useState(email);
 
   const saveEditHandler = async () => {
     const res = await axios
       .patch("/api/profile", {
         name: editName,
-        lastName: editLastName,
         email: editEmail,
       })
       .then((res) => res.data)
@@ -34,15 +32,6 @@ function ProfileDataEdit({ user, setEdit, refetch }) {
           type="text"
           value={editName}
           onChange={(e) => setEditName(e.target.value)}
-        />
-      </div>
-      <div>
-        <span>Last Name: </span>
-        <input
-          className="text-xl text-black"
-          type="text"
-          value={editLastName}
-          onChange={(e) => setEditLastName(e.target.value)}
         />
       </div>
       <div>

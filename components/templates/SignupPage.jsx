@@ -9,7 +9,6 @@ import { toast } from "react-toastify";
 
 function SignupPage() {
   const [name, setName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
@@ -19,7 +18,7 @@ function SignupPage() {
   const signupMutation = useMutation({
     mutationFn: async () => {
       const res = await axios
-        .post("/api/auth/signup", { email, password, name, lastName })
+        .post("/api/auth/signup", { email, password, name })
         .then((res) => res.data);
       return res;
     },
@@ -42,12 +41,6 @@ function SignupPage() {
         placeholder="First Name"
         onChange={(e) => setName(e.target.value)}
         value={name}
-      />
-      <input
-        type="text"
-        placeholder="Last Name"
-        onChange={(e) => setLastName(e.target.value)}
-        value={lastName}
       />
       <input
         type="text"
